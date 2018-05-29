@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    margin: 10px;
+}
+
+.chart .titles h2 {
+    text-align: center;
+    font-size: 5em;
+    margin-bottom: 0;
+}
+
+.chart .titles p {
+    text-align: center;
+}
+
+.chart .myCanvas {
+    position: relative;
+    width: 30em;
+    margin: 0 auto;
+}
+
+.autores .titles h3 {
+    font-size: 2em;
+    margin-bottom: 0px;
+}
+
+.autores .titles p {
+    color: gray;
+
+}
+
+.autores .titles {
+    margin: 50px 0;
+}
+
+.autores ul {
+    margin: 20px;
+    padding: 0;
+    list-style: decimal;
+}
+
+.response_section h2 {
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.response_section textarea {
+    padding: 5px;
+    width: 100%;
+}
+
+.response_section button {
+    border: 0;
+    background: none;
+    -webkit-appearance: none;
+    background-color: #8eb2be;
+    padding: 10px;
+    width: 100px;
+    color: white;
+    cursor: pointer;
+}
+
+.response_section button:hover {
+    opacity: 0.8;
+}
+
+.analyze_btn {
+background-color: #67e667;
+    padding: 10px;
+    width: 100px;
+    margin: 20px auto;
+    text-align: center;
+    cursor: pointer;
+}
+
+.analyze_btn:hover {
+    opacity: 0.8;
+}
+
+
