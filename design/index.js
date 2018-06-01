@@ -20,14 +20,10 @@ $(document).ready(() => {
     console.log('start');
     resize_respond_button()
     setupChart();
-
     setupColours();
-
-
 });
 
 function setupColours() {
-
     $('.tone').each((index, elem) => {
         var col = $(elem).children('.tone_header').children('.col').css('backgroundColor');
 
@@ -107,7 +103,6 @@ function createNewResponse(element) {
     }
 }
 
-
 function resize_respond_button() {
     console.log('resiixn');
     let val = $('#entered_response').innerWidth() - 38;
@@ -129,7 +124,7 @@ function setupChart() {
     for (var key in color_names) {
         color_codes.push(colors[color_names[key]]);
     }
-    
+
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'doughnut',
@@ -144,4 +139,28 @@ function setupChart() {
         },
         options: {}
     });
+}
+
+function analyze(what) {
+
+//    var xhttp = new XMLHttpRequest();
+//
+//    xhttp.onreadystatechange = function () {
+//        if (this.readyState == 4 && this.status == 200) {
+//            console.log(this.responseText);
+//        }
+//    };
+//
+//    xhttp.open('POST', "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone_chat?version=2017-09-21", true);
+//    var auth = window.btoa("cd8bed7f-2dd0-4e2e-bf1a-f22cf7dc8444" + ":" + "PAhWelVA7fnh");
+//    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+//    xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+//    xhttp.setRequestHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//    xhttp.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//    xhttp.setRequestHeader('Authorization', 'Basic ' + auth);
+//    xhttp.setRequestHeader('Accept', 'application/json');
+//    xhttp.send({
+//        text: "I really like cats and nobody can stop me from liking cats. You are not a cat so I will not listen to you"
+//    });
+    
 }

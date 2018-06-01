@@ -4,11 +4,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-credentials = require('credentials.json');
+
+credentials = require('credentials.json'); // api credentials
 firebase = require("firebase");
 // Required for side-effects
 require("firebase/firestore");
-
 
 // initialize firebase
 firebase.initializeApp(credentials.firebase);
@@ -19,22 +19,17 @@ var hbs = require('express-handlebars');
 const fs = require('fs');
 
 
-
-
 // global vars
 
-
 sentiment_avgs = {
-  anger: 0,
-  fear: 0,
-  joy: 0,
-  sadness: 0,
-  analytical: 0,
-  confident: 0,
-  tentative: 0
+  anger: { avg: 0, num: 0 },
+  fear: { avg: 0, num: 0 },
+  joy: { avg: 0, num: 0 },
+  sadness: { avg: 0, num: 0 },
+  analytical: { avg: 0, num: 0 },
+  confident: { avg: 0, num: 0 },
+  tentative: { avg: 0, num: 0 }
 }
-
-
 
 var app = express();
 
@@ -50,10 +45,9 @@ app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 
 app.use('/scripts', express.static(__dirname + '/node_modules/'));
+// route setup
 app.use('/', indexRouter);
 app.use('/analyze', analyzeRouter);
-
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -73,6 +67,3 @@ app.use(function (err, req, res, next) {
 
 
 module.exports = app;
-
-
-/// AZADS STUFF

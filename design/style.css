@@ -139,10 +139,16 @@ body {
 }
 
 .button_white:hover {
-    background-color: rgba(255, 255, 255, 0.75);
+    opacity: 0.8;
 }
 
 .wrapper_a .button_white.short {
+    width: 180px;
+}
+
+.blue {
+    background-color: #4285F4;
+    color: white;
     width: 180px;
 }
 

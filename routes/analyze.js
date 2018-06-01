@@ -5,63 +5,48 @@ var request = require('request');
 // on load, analyze and redirect to home again 
 var db = firebase.firestore();
 
-let sentiments = {
-    anger: [],
-    fear: [],
-    joy: [],
-    sadness: [],
-    analytical: [],
-    confident: [],
-    tentative: []
-}
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    doAll(res); // run the body async
+    async () => {
+        let comments = await db.collection("comments").get()
+            .comments.map(doc => [doc.id, doc.data()]);
+
+        let responses = await db.collection("responses").get()
+            .comments.map(doc => [doc.id, doc.data()]);
+
+        // have all the documents
+        for (let j = 0; j < comments.length; j++) {
+            // for all documents, analyze each one
+            let doc = comments[j];
+
+            let message = doc[1].message; // get the message to analyze
+            let uid = doc[0]; // the id of message
+
+            // analyze it 
+            let res = await analyze(doc[0], message);
+
+            for (let i = 0; i < res.length; i++) {
+                // for all tones in the result, add values to the list
+
+                sentiments[res[i].tone_id].push(1);
+            }
+        }
+
+        console.log(sentiments);
+        // al documents analyzed
+        // set averages and return to index
+        for (let key in sentiments) {
+            let avg = 0;
+            for (let i = 0; i < sentiments[key].length; i++) {
+                avg += sentiments[key][i];
+            }
+            // avg /= sentiments[key].length
+            sentiment_avgs[key] = avg; // save the averages
+        }
+        // send back to index
+        res.redirect('/');
+    }
 });
-
-let querySnapshot_b;
-let docs_b;
-
-async function doAll(res) {
-    let querySnapshot = await db.collection("comments").get();
-    let docs = await querySnapshot.docs.map(doc => [doc.id, doc.data()]);
-
-    querySnapshot_b = await db.collection("responses").get();
-    docs_b = await querySnapshot_b.docs.map(doc => [doc.id, doc.data()]);
-    // have all the documents
-
-    for (let j = 0; j < docs.length; j++) {
-        // for all documents, analyze each one
-        let doc = docs[j];
-
-        let message = doc[1].message; // get the message to analyze
-        let uid = doc[0]; // the id of message
-
-        // analyze it 
-        let res = await analyze(doc[0], message);
-
-        for (let i = 0; i < res.length; i++) {
-            // for all tones in the result, add values to the list
- 
-            sentiments[res[i].tone_id].push(1);
-        }
-    }
-
-    console.log(sentiments);
-    // al documents analyzed
-    // set averages and return to index
-    for (let key in sentiments) {
-        let avg = 0;
-        for (let i = 0; i < sentiments[key].length; i++) {
-            avg += sentiments[key][i];
-        }
-        // avg /= sentiments[key].length
-        sentiment_avgs[key] = avg; // save the averages
-    }
-    // send back to index
-    res.redirect('/');
-}
 
 function analyze(uid, what) {
     return new Promise((resolve, reject) => {
@@ -70,7 +55,7 @@ function analyze(uid, what) {
         }, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 // do the message sending inline with analysis
-                handleMessage(uid, body.document_tone.tones, what);s
+                handleMessage(uid, body.document_tone.tones, what); 
                 resolve(body.document_tone.tones);
             } else if (error) {
                 reject(error);
@@ -81,7 +66,7 @@ function analyze(uid, what) {
 
 // find what message to send
 async function handleMessage(uid, tones, message) {
-    // have all messages we could send in docs
+    // have all messages we could send in comments
 
     let sorted_tones = tones.sort((a, b) => {
         if (a.score < b.score) {
@@ -102,9 +87,9 @@ async function handleMessage(uid, tones, message) {
         if (val.score > 0.60) { // sureness must be above this level to be included in message
 
             // find the message for the tone
-            for (let i = 0; i < docs_b.length; i++) {
-                if (docs_b[i][0] == val.tone_id) {
-                    response_str += docs_b[i][1].message + ' '; // build the response, add a space for next
+            for (let i = 0; i < comments_b.length; i++) {
+                if (comments_b[i][0] == val.tone_id) {
+                    response_str += comments_b[i][1].message + ' '; // build the response, add a space for next
                     break;
                 }
             }
