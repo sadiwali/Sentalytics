@@ -9,7 +9,6 @@ $(window).resize(() => {
 });
 
 $(document).ready(() => {
-    console.log('start');
     resize_respond_button()
     // get saved responses for each tone block
 
@@ -46,7 +45,7 @@ function setupColours() {
                 'border-color': col,
                 'color': col
             });
-            console.log(col);
+
             $(elem_a).children('ul').children('li').first().mouseenter(function () {
                 $(this).css({
                     'background-color': col,
@@ -86,16 +85,15 @@ function enableEdit(element) {
         }, res => {
             if (res) {
                 // saved
-                console.log("saved");
+                showToast("Saved!", 3000);
             } else {
                 // could not save
-                console.log("Something happened while trying to save.");
+                showToast("Uh oh. Something happend while trying to save.", 3000);
             }
         })
         btn.text("Edit");
         textArea.prop("disabled", true);
     }
-
 }
 
 function deleteResponse(element) {
@@ -110,11 +108,13 @@ function deleteResponse(element) {
                 $(element).parent().parent().remove();
             } else {
                 // could not delete
-                console.log("Something happened while trying to delete.");
+                showToast("Uh oh. Something happend while trying to delete.", 3000);
+
             }
         });
     } else {
-        console.log("Can't delete this");
+        showToast("You can't delete that. There must be at least one.", 3000);
+
     }
 }
 
@@ -140,7 +140,8 @@ function createNewResponse(element) {
                     textArea.val('');
                 } else {
                     // could not add
-                    console.log("Something happened when trying to insert.");
+                    showToast("Uh oh. Something happend while trying to insert.", 3000);
+
                 }
             });
         }
