@@ -124,4 +124,12 @@ function analyze(messages) {
     });
 }
 
+/*
+Given the analysis results, respond with the appropriate combination of
+auto-responses.
+*/
+function respond(results) {
+    
+}
+
 module.exports = router;

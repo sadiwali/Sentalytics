@@ -77,6 +77,83 @@ sentiments_count = {}
 for (var sentiment in sentiments_used) sentiments_count[sentiment] = 0;
 
 
+
+
+// debug purposes, this list is used while twitter scrubber is being developed
+
+twitter_data = [
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+  {
+    user: "Bob",
+    "message": "I really this product."
+  },
+];
+
+
+
+
+
+
+
+
+
+
+
 var indexRouter = require('./routes/index');
 var analyzeRouter = require('./routes/analyze');
 var hbs = require('express-handlebars');
