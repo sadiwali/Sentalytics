@@ -1,228 +1,144 @@
-var lastScrollTop = 0; // for detecting scroll direction
-var MIN_SCROLL_AMT = 150; // minimum scroll amount before scrolling menu
-var scrollingDown = false; // for detecting scroll direction
-var menuShowing = false; // is menu showing?
-
-var GRID_ITEM_WIDTH = 210; // 100px each cell in grid
-var GRID_GAP = 10; // 10 px grid gap for packery
-
-// set only one of these to true to force day or night
-var bg_force_day = false;
-var bg_force_night = false;
-
+var colors = {
+    "anger": "#FF6383",
+    "fear": "#FF9F40",
+    "joy": "#FFCD56",
+    "sadness": "#36A2EB",
+    "analytical": "#4BC0C0",
+    "confident": "#7ED321",
+    "tentative": "#8163FF"
+};
 
 $(window).scroll((event) => {
-    var st = $(this).scrollTop();
 
-    fixMenuBars();
-
-    if (st > lastScrollTop) {
-        // downscroll
-        scrollingDown = true;
-        showTopButton();
-        hideHeader();
-    } else {
-        // upscroll code
-        scrollingDown = false;
-        showHeader();
-    }
-    if (st == 0) {
-        hideTopButton();
-    }
-
-    lastScrollTop = st;
 });
 
 $(window).resize(() => {
-    fixMenuBars();
-    setGridBodyWidth();
+    resize_respond_button()
 });
 
 $(document).ready(() => {
-    $('.grid').packery({
-        itemSelector: '.grid-item',
-        gutter: GRID_GAP,
-        stagger: 30,
-        transitionDuration: '0.2s',
-    });
-
-    fixMenuBars();
-    $('#bars').hover(function () {
-        $('.bars_container').css({
-            'opacity': '1'
-        });
-    });
-
-    $('#bars').mouseleave(function () {
-        if ($(window).scrollTop() >= MIN_SCROLL_AMT && scrollingDown) {
-            setTimeout(() => {
-                $('.bars_container').css({
-                    'opacity': '0.1'
-                });
-            }, 500);
-        }
-    });
-    setGridBodyWidth();
-    installImageViewHandler();
-
-    if ($('#copy_link').length) {
-        $('#copy_link').html(window.location.toString());
-    }
-
-    // set the landing page bg based on date
-    var time_hours = (new Date()).getHours();
-    var config_to_use = '';
-    if ((time_hours >= 7 && time_hours <= 19 && !bg_force_night) || bg_force_day) {
-        // if between 7am and 8pm (day)
-        config_to_use = 'particles_day.json';
-        $('#particles-js').css({
-            'background-color': '#bce0ff'
-        });
-        $('#quote').css({
-            'color': 'black'
-        });
-    } else {
-        config_to_use = 'particles_night.json';
-        $('#particles-js').css({
-            'background-color': 'black'
-        });
-        $('#quote').css({
-            'color': 'white'
-        });
-    }
-
-    console.log(time_hours, config_to_use);
-
-    particlesJS.load('particles-js', '/assets/' + config_to_use, function () {
-        console.log('callback - particles.js config loaded');
-    });
+    console.log('start');
+    resize_respond_button()
+    setupChart();
+    setupColours();
 });
 
-function installImageViewHandler() {
-    $('.previewable').click((event) => {
+function setupColours() {
+    $('.tone').each((index, elem) => {
+        var col = $(elem).children('.tone_header').children('.col').css('backgroundColor');
 
-        $('#img').attr('src', event.target.src);
-        $('.image_view').show();
-    });
-}
+        $(elem).children('.response').children('ul').children('li').each((index_a, elem_a) => {
+            $(elem_a).children('ul').children('li').first().css({
+                'border-color': col,
+                'color': col
+            });
 
-// set the grid body width so it is tightest, for centering
-function setGridBodyWidth() {
-    var howManyCanFit = Math.floor($('.grid_wrapper').width() / (GRID_ITEM_WIDTH + GRID_GAP));
-    $('.grid').css({
-        'width': (howManyCanFit * (GRID_ITEM_WIDTH + GRID_GAP) - GRID_GAP).toString() + 'px'
-    });
-}
-
-function fixMenuBars() {
-    var st = $(this).scrollTop();
-    if (st <= $('#title').outerHeight() + 5 && !menuShowing) {
-        $('.bars_container').css({
-            'transition': 'none',
-            'top': Math.abs(st - $('#title').outerHeight() - 20).toString() + 'px',
+            $(elem_a).children('ul').children('li').first().mouseenter(function () {
+                $(this).css({
+                    'background-color': col,
+                    'color': 'white'
+                });
+            }).mouseleave(function () {
+                $(this).css({
+                    'background-color': 'transparent',
+                    'color': col
+                });
+            });
         });
+
+        $(elem).children('.response').children('.new_response_btn').css({
+            'background-color': col
+        });
+    });
+}
+
+function enableEdit(element) {
+    var textArea = $(element).parent().parent().children("textarea");
+    var btn = $(element);
+
+    if (btn.text().toLowerCase() == "edit") {
+        // edit, set to editable
+        btn.text("Save");
+        textArea.prop("disabled", false);
+
     } else {
-        $('.bars_container').css({
-            'top': '0px',
-            'transition': 'all 0.3s ease',
-        });
+        // save, set to uneditable
+        btn.text("Edit");
+        textArea.prop("disabled", true);
+    }
+    console.log($(element).parent().parent().children("textarea").val());
+}
+
+function deleteResponse(element) {
+    var mainUl = $(element).parent().parent().parent();
+    console.log(mainUl.children('li').length);
+    if (mainUl.children('li').length - 1 > 1) {
+        $(element).parent().parent().remove();
+    } else {
+        console.log("can't delete this");
     }
 }
 
-function hideHeader() {
-    $('.bars_container').css({
-        'opacity': '0.1',
-        'background-color': 'transparent',
-        'pointer-events': 'none'
-    });
-}
+function createNewResponse(element) {
+    var textArea = $(element).parent().children('ul').children('li').last().children('textarea');
 
-function showHeader() {
-    $('.bars_container').css({
-        'opacity': '1',
-        'background-color': 'white',
-        'pointer-events': 'all'
-    });
-}
+    if (textArea.css('display') == 'block') {
+        // add, then hide 
+        $(element).html('<i class="fas fa-plus"></i> &nbsp; Add a new response');
+        if (textArea.val().trim()) {
 
-function showTopButton() {
-    $('#top_btn').show();
-}
-
-function hideTopButton() {
-    $('#top_btn').hide();
-}
-
-function toggleMenu() {
-    if (!menuShowing) {
-        showMenu();
+            $(element).parent().children('ul').children('li').last().before('<li><textarea disabled id="entered_response" placeholder="Write here...">' + textArea.val() + '</textarea><ul><li onclick="enableEdit(this);">Edit</li><li onclick="deleteResponse(this)">Delete</li></ul></li>');
+            textArea.val('');
+        }
+        textArea.css({
+            'display': 'none'
+        });
     } else {
-        hideMenu();
+        // just show for adding
+        textArea.css({
+            'display': 'block'
+        });
+
+        $(element).html('<i class="fas fa-plus"></i> &nbsp; Submit');
     }
 }
 
-function showMenu() {
-    menuShowing = true;
-    $('.circle').css({
-        'height': (Math.sqrt(Math.pow(screen.width, 2) + Math.pow(screen.height, 2))).toString() + 'px',
-        'width': (Math.sqrt(Math.pow(screen.width, 2) + Math.pow(screen.height, 2))).toString() + 'px',
-    });
-    $('.footer_contents').addClass('fixed_footer_contents');
-    $('#title').css({
-        'transform': 'translateY(-60px)'
-    });
-    fixMenuBars();
-}
+function resize_respond_button() {
+    console.log('resiixn');
+    let val = $('#entered_response').innerWidth() - 38;
 
-function hideMenu() {
-    menuShowing = false;
-
-    $('.circle').css({
-        'height': '0px',
-        'width': '0px',
+    console.log(val);
+    $('.new_response_btn').css({
+        'width': val.toString() + 'px'
     });
 
-    $('.footer_contents').removeClass('fixed_footer_contents');
-    $('#title').css({
-        'transform': 'translateY(0)'
-    });
-    fixMenuBars();
-}
-
-// scroll to top function
-function topFunction() {
-    $('html, body').animate({
-        scrollTop: '0px'
+    $('.new_response').css({
+        'width': (val + 40).toString() + 'px'
     });
 }
 
-function hideImageView() {
-    $('.image_view').hide();
+function setupChart() {
+    var color_names = Object.keys(colors);
+    var color_codes = [];
+    console.log(color_names);
+    for (var key in color_names) {
+        color_codes.push(colors[color_names[key]]);
+    }
+
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: color_names,
+            datasets: [{
+                label: 'Tonal Association with BMO',
+                data: [12, 19, 3, 5, 2, 3, 5],
+                backgroundColor: color_codes,
+                borderWidth: 2
+        }]
+        },
+        options: {}
+    });
 }
 
-function copyToClipboard(element) {
-    var text = document.getElementById(element);
-    var selection = window.getSelection();
-    var range = document.createRange();
-    range.selectNodeContents(text);
-    selection.removeAllRanges();
-    selection.addRange(range);
-    document.execCommand("Copy");
-    selection.removeAllRanges();
-}
 
-function copyLink(event) {
-    copyToClipboard('copy_link');
-
-    var duplicate = $('#clone');
-
-    duplicate.animate({
-        'top': '-10px',
-        'opacity': '0'
-    }, 100, () => {
-        duplicate.css({
-            'top': '2px',
-            'opacity': '1'
-        });
-    })
-}

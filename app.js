@@ -4,14 +4,48 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
+var credentials = require('./credentials.json'); // api credentials
 
-credentials = require('./credentials.json'); // api credentials
+toneAnalyzer = new ToneAnalyzerV3({
+  version: '2017-09-21',
+  username: credentials.watson.username,
+  password: credentials.watson.password,
+  headers: { 'X-Watson-Learning-Opt-Out': 'true' }
+});
+
 firebase = require("firebase");
 // Required for side-effects
 require("firebase/firestore");
 
 // initialize firebase
 firebase.initializeApp(credentials.firebase);
+db = firebase.firestore();
+
+all_sentiments = [
+  // from general tone
+  'anger',
+  'disgust',
+  'fear',
+  'joy',
+  'sadness',
+  'analytical',
+  'confident',
+  'tentative',
+  // from chat tone
+  'sad',
+  'frustrated',
+  'satisfied',
+  'excited',
+  'polite',
+  'impolite',
+  'sympathetic'
+];
+
+sentiments_used = [
+
+];
+
 
 var indexRouter = require('./routes/index');
 var analyzeRouter = require('./routes/analyze');
