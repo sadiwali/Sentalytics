@@ -22,7 +22,7 @@ require("firebase/firestore");
 firebase.initializeApp(credentials.firebase);
 db = firebase.firestore();
 
-all_sentiments = [
+var all_sentiments = [
   // from general tone
   'anger',
   'disgust',
@@ -41,10 +41,20 @@ all_sentiments = [
   'impolite',
   'sympathetic'
 ];
-
+// using chat tone sentiments as they are more relavant.
 sentiments_used = [
-
+  'sad',
+  'frustrated',
+  'satisfied',
+  'excited',
+  'polite',
+  'impolite',
+  'sympathetic'
 ];
+// sentiment count
+sentiments_count = {}
+// populate sentiment count object programmatically
+for (var sentiment in sentiments_used) sentiments_count[sentiment] = 0;
 
 
 var indexRouter = require('./routes/index');
@@ -53,17 +63,7 @@ var hbs = require('express-handlebars');
 const fs = require('fs');
 
 
-// global vars
 
-sentiment_avgs = {
-  anger: { avg: 0, num: 0 },
-  fear: { avg: 0, num: 0 },
-  joy: { avg: 0, num: 0 },
-  sadness: { avg: 0, num: 0 },
-  analytical: { avg: 0, num: 0 },
-  confident: { avg: 0, num: 0 },
-  tentative: { avg: 0, num: 0 }
-}
 
 var app = express();
 

@@ -177,9 +177,14 @@ body {
 
 }
 
-.pie_chart {
+.top_flex {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    text-align: center;
+}
+
+.pie_chart {
     position: relative;
 }
 
@@ -216,6 +221,40 @@ body {
     transform: translateY(-50%);
 }
 
+.demo {
+    max-width: 400px;
+
+}
+
+.demo h3 {
+    font-family: Poppins;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.demo .demo_text {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 100px;
+    width: 100%;
+    font-family: Poppins;
+    color: #383838;
+    flex-grow: 1;
+    margin-bottom: 20px;
+    resize: vertical;
+}
+
+.demo p {
+    font-family: Poppins;
+    text-align: left;
+}
+
+.demo .button_white {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1em;
+}
 
 
 .tone {
