@@ -221,11 +221,14 @@ body {
     transform: translateY(-50%);
 }
 
+
+
 .demo {
     max-width: 400px;
-
 }
-
+.demo .auto_res {
+    display:none;
+}
 .demo h3 {
     font-family: Poppins;
     font-weight: normal;
@@ -313,6 +316,7 @@ body {
     font-family: Poppins;
     font-weight: bolder;
     font-size: 2.4em;
+    text-transform: capitalize;
 }
 
 .message {

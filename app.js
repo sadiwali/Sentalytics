@@ -51,6 +51,26 @@ sentiments_used = [
   'impolite',
   'sympathetic'
 ];
+// colors to use for each sentiment
+sentiment_colors = {
+  "frustrated": "#FF6383",
+  "sympathetic": "#FF9F40",
+  "excited": "#FFCD56",
+  "sad": "#36A2EB",
+  "polite": "#4BC0C0",
+  "impolite": "#7ED321",
+  "satisfied": "#8163FF",
+};
+
+sentiment_sample_comments = {
+  'frustrated': ['frustrated 1'],
+  'sympathetic': ['sympathetic 1'],
+  'excited': ['excited 1'],
+  'sad': ['sad 1'],
+  'polite': ['polite 1'],
+  'impolite': ['impolite 1'],
+  'satisfied': ['satisfied 1']
+}
 // sentiment count
 sentiments_count = {}
 // populate sentiment count object programmatically

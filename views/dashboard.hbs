@@ -40,9 +40,11 @@
             <div class="demo">
                 <h3>Test the auto-response</h3>
                 <textarea class="demo_text" placeholder="Enter a sample comment"></textarea>
-                <h3>Auto-response:</h3>
-                <p>"We are sorry to hear that! Please get back to us so we can help you out!"</p>
-                <div class="button_white short blue">Submit</div>
+                <div class="auto_res">
+                    <h3>Auto-response:</h3>
+                    <p></p>
+                </div>
+                <div class="button_white short blue" onclick="analyzeDemoMessage(this);">Submit</div>
             </div>
         </div>
     </section>
@@ -52,106 +54,32 @@
             <h1>Automated Responses</h1>
             <p>Set your own responses to the tones below.</p>
         </div>
-        <div class="tone" id="anger">
-            <span class="tone_header">
-                <div class="col"></div>
-                <span class="text">Anger</span>
-            </span>
-            <div class="message">
-                <h1>How would you respond to...</h1>
-                <p>"Your service makes me want to smash my phone!"</p>
-                <p>"I'm not impressed by the efficiency of the new app, please fix it."</p>
-            </div>
-            <div class="response">
-                <h1>Your response:</h1>
-                <ul>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
-                    </li>
-                </ul>
-                <div class="new_response_btn" onclick="createNewResponse(this)">
-                    <i class="fas fa-plus"></i> &nbsp; Add a new response
-                </div>
-            </div>
-        </div>
-        <div class="tone" id="fear">
-            <span class="tone_header">
-                <div class="col"></div>
-                <span class="text">Fear</span>
-            </span>
-            <div class="message">
-                <h1>How would you respond to...</h1>
-                <p>"I'm afraid of your website, it feels like I am going to lose my data!"</p>
-                <p>"Your service scares me."</p>
-            </div>
-            <div class="response">
-                <h1>Your response:</h1>
-                <ul>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
-                    </li>
-                </ul>
-                <div class="new_response_btn" onclick="createNewResponse(this)">
-                    <i class="fas fa-plus"></i> &nbsp; Add a new response
-                </div>
-            </div>
-        </div>
 
-        <div class="tone" id="joy">
+        {{#each sentiment_blocks}}
+
+
+        <div class="tone" id="{{this.sentiment}}">
             <span class="tone_header">
-                <div class="col"></div>
-                <span class="text">Joy</span>
+                <div class="col" style="background-color:{{this.col}}"></div>
+                <span class="text">{{this.sentiment}}</span>
             </span>
             <div class="message">
                 <h1>How would you respond to...</h1>
-                <p>"I am really happy with XYZ company's service!"</p>
-                <p>"Your service makes me happy"</p>
+                {{#each this.sample_comments}}
+                <p>"{{this}}"</p>
+                {{/each}}
             </div>
             <div class="response">
                 <h1>Your response:</h1>
                 <ul>
+                    {{!--
                     <li>
                         <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
                         <ul>
                             <li onclick="enableEdit(this);">Edit</li>
                             <li onclick="deleteResponse(this);">Delete</li>
                         </ul>
-                    </li>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
+                    </li> --}}
                     <li>
                         <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
                     </li>
@@ -161,146 +89,8 @@
                 </div>
             </div>
         </div>
+        {{/each}}
 
-        <div class="tone" id="sadness">
-            <span class="tone_header">
-                <div class="col"></div>
-                <span class="text">Sadness</span>
-            </span>
-            <div class="message">
-                <h1>How would you respond to...</h1>
-                <p>"I broke my phone!"</p>
-                <p>"I wish I could still receive the promotional price! Bummer."</p>
-            </div>
-            <div class="response">
-                <h1>Your response:</h1>
-                <ul>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
-                    </li>
-                </ul>
-                <div class="new_response_btn" onclick="createNewResponse(this)">
-                    <i class="fas fa-plus"></i> &nbsp; Add a new response
-                </div>
-            </div>
-        </div>
-
-        <div class="tone" id="analytical">
-            <span class="tone_header">
-                <div class="col"></div>
-                <span class="text">Analytical</span>
-            </span>
-            <div class="message">
-                <h1>How would you respond to...</h1>
-                <p>"I feel like their service is not the same as it used to be before."</p>
-            </div>
-            <div class="response">
-                <h1>Your response:</h1>
-                <ul>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here...">We appreciate your attention to detail when it comes to our services</textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
-                    </li>
-                </ul>
-                <div class="new_response_btn" onclick="createNewResponse(this)">
-                    <i class="fas fa-plus"></i> &nbsp; Add a new response
-                </div>
-            </div>
-        </div>
-
-        <div class="tone" id="confident">
-            <span class="tone_header">
-                <div class="col"></div>
-                <span class="text">Confident</span>
-            </span>
-            <div class="message">
-                <h1>How would you respond to...</h1>
-                <p>"I will always use their services because I know it will work!"</p>
-            </div>
-            <div class="response">
-                <h1>Your response:</h1>
-                <ul>
-
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here...">We appreciate your confidence in our products!</textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
-                    </li>
-                </ul>
-                <div class="new_response_btn" onclick="createNewResponse(this)">
-                    <i class="fas fa-plus"></i> &nbsp; Add a new response
-                </div>
-            </div>
-        </div>
-
-        <div class="tone" id="tentative">
-            <span class="tone_header">
-                <div class="col"></div>
-                <span class="text">Tentative</span>
-            </span>
-            <div class="message">
-                <h1>How would you respond to...</h1>
-                <p>"I don't know if I should choose plan A or plan B for my first plan!"</p>
-                <p>"I wonder how I set up the device."</p>
-            </div>
-            <div class="response">
-                <h1>Your response:</h1>
-                <ul>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here...">Please visit us at any service center, and we'll help you get started!</textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea disabled id="entered_response" placeholder="Write here...">You can reach us directly at xxx-xxx-xxxx, we'd love to set you up!</textarea>
-                        <ul>
-                            <li onclick="enableEdit(this);">Edit</li>
-                            <li onclick="deleteResponse(this);">Delete</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
-                    </li>
-                </ul>
-                <div class="new_response_btn" onclick="createNewResponse(this)">
-                    <i class="fas fa-plus"></i> &nbsp; Add a new response
-                </div>
-            </div>
-        </div>
     </section>
 
 </div>
