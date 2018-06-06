@@ -117,7 +117,6 @@ function deleteResponse(element) {
     }
 }
 
-
 function createNewResponse(element) {
     var textArea = $(element).parent().children('ul').children('li').last().children('textarea');
 

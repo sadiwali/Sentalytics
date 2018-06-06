@@ -8,7 +8,6 @@ var db = firebase.firestore();
 
 router.get('/', (req, res, next) => {
 
-
 });
 
 /* Get the sentiment_colors json object*/
@@ -16,6 +15,7 @@ router.post('/get_colors', (req, res, next) => {
     res.send(sentiment_colors);
 });
 
+/* Analyze a single message (used for demo) */
 router.post('/analyze_single', (req, res, next) => {
     var message = req.body.message;
     analyze([{ text: message }]).then(data => {
@@ -24,12 +24,14 @@ router.post('/analyze_single', (req, res, next) => {
     }).catch(console.log);
 });
 
+/* Get list of all saved auto-resposes for local JS to populate */
 router.post('/get_responses', (req, res, next) => {
     getSavedResponses().then(data => {
         res.send(data);
     }).catch(res.send);
 });
 
+/* Delete a response, given its index and id (which tone) */
 router.post('/delete_response', (req, res, next) => {
     var id = req.body.id;
     var ind = req.body.ind;
@@ -50,6 +52,7 @@ router.post('/delete_response', (req, res, next) => {
     });
 });
 
+/* Update a response, given its index and id (which tone) */
 router.post('/update_response', (req, res, next) => {
     var id = req.body.id;
     var ind = req.body.ind;
@@ -69,6 +72,7 @@ router.post('/update_response', (req, res, next) => {
     });
 });
 
+/* Insert a new response, given the tone type and message to insert */
 router.post('/new_response', (req, res, next) => {
     var id = req.body.id;
     var message = req.body.message;
@@ -86,6 +90,7 @@ router.post('/new_response', (req, res, next) => {
     });
 });
 
+/* helper function for getting all saved responses */
 function getSavedResponses() {
     return new Promise(async (resolve, reject) => {
         var querySnapshot = await db.collection("responses").get();
@@ -102,20 +107,18 @@ function getSavedResponses() {
     });
 }
 
-
-
+/* function for analyzing list of up to 50 messages at a time */
 function analyze(messages) {
-
     var toneChatParams = {
         utterances: messages
     };
-
     return new Promise((resolve, reject) => {
         toneAnalyzer.toneChat(toneChatParams, function (error, analysis) {
             if (error) {
                 reject(error);
             } else {
-                resolve(JSON.stringify(analysis, null, 2));
+                resolve(analysis.utterances_tone);
+                console.log(analysis.utterances_tone);
             }
         }); 0;
     });
