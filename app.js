@@ -5,7 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-credentials = require('credentials.json'); // api credentials
+credentials = require('./credentials.json'); // api credentials
 firebase = require("firebase");
 // Required for side-effects
 require("firebase/firestore");
