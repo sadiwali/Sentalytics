@@ -3,7 +3,11 @@ var router = express.Router();
 // on load, option to analyze
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
+  res.redirect('/dashboard');
+});
+
+router.get('/dashboard', function (req, res, next) {
   // for each used emotion
   // let querySnapshot = await db.collection("sample_comments").get();
     // let docs = await querySnapshot.docs.map(doc => [doc.id, doc.data()]);

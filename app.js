@@ -47,8 +47,8 @@ sentiments_used = [
   'frustrated',
   'satisfied',
   'excited',
-  'polite',
-  'impolite',
+  // 'polite',
+  // 'impolite',
   'sympathetic'
 ];
 // colors to use for each sentiment

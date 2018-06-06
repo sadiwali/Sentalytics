@@ -7,12 +7,17 @@ var db = firebase.firestore();
 
 
 router.get('/', (req, res, next) => {
-
+    res.redirect('/dashboard');
 });
 
 /* Get the sentiment_colors json object*/
 router.post('/get_colors', (req, res, next) => {
-    res.send(sentiment_colors);
+    // send only colors for sentiments that are used
+    var colors_used = {};
+    for (var key in sentiments_used) {
+        colors_used[sentiments_used[key]] = sentiment_colors[sentiments_used[key]];
+    }
+    res.send(colors_used);
 });
 
 /* Analyze a single message (used for demo) */
@@ -129,7 +134,7 @@ Given the analysis results, respond with the appropriate combination of
 auto-responses.
 */
 function respond(results) {
-    
+
 }
 
 module.exports = router;

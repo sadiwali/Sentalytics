@@ -11,28 +11,29 @@ $(window).resize(() => {
 $(document).ready(() => {
     console.log('start');
     resize_respond_button()
+    // get saved responses for each tone block
+
     $.post("/analyze/get_colors", data => {
         // data received, update response_element
         colors = data;
+        $.post('/analyze/get_responses', data => {
 
-        setupColours();
-        setupChart();
-    });
-    // get saved responses for each tone block
-    $.post('/analyze/get_responses', data => {
+            for (var i in data) {
+                var tone_block = $('#' + data[i].id);
+                for (var k in data[i].messages) {
+                    var msg = data[i].messages[k];
 
-        for (var i in data) {
-            var tone_block = $('#' + data[i].id);
-            for (var k in data[i].messages) {
-                var msg = data[i].messages[k];
-
-                tone_block.children('.response').children('ul').children('li')
-                    .last().before('<li><textarea disabled id="entered_response" '
-                        + 'placeholder="Write here...">' + msg
-                        + '</textarea><ul><li onclick="enableEdit(this);">Edit</li>' +
-                        '<li onclick="deleteResponse(this)">Delete</li></ul></li>')
+                    tone_block.children('.response').children('ul').children('li')
+                        .last().before('<li><textarea disabled id="entered_response" '
+                            + 'placeholder="Write here...">' + msg
+                            + '</textarea><ul><li onclick="enableEdit(this);">Edit</li>' +
+                            '<li onclick="deleteResponse(this)">Delete</li></ul></li>')
+                }
             }
-        }
+            // all of the responses populated, so begin color setting
+            setupColours();
+            setupChart();
+        });
     });
 });
 
@@ -45,7 +46,7 @@ function setupColours() {
                 'border-color': col,
                 'color': col
             });
-
+            console.log(col);
             $(elem_a).children('ul').children('li').first().mouseenter(function () {
                 $(this).css({
                     'background-color': col,
@@ -208,4 +209,15 @@ function analyzeDemoMessage(what) {
     });
 }
 
+function showToast(message, duration) {
+    $('.toast').children('.toast_message').html(message);
+    $('.toast').css({
+        'bottom': '20px'
+    });
+    setTimeout(() => {
+        $('.toast').css({
+            'bottom': '-60px'
+        });
+    }, duration);
+}
 
