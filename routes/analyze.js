@@ -3,9 +3,8 @@ var router = express.Router();
 var request = require('request');
 
 // on load, analyze and redirect to home again 
-var db = firebase.firestore();
-
-
+var auto_res_lib_changed = false; // need to pull the list again?
+var auto_res_lib; // get auto-responses from here
 router.get('/', (req, res, next) => {
     res.redirect('/dashboard');
 });
@@ -23,9 +22,8 @@ router.post('/get_colors', (req, res, next) => {
 /* Analyze a single message (used for demo) */
 router.post('/analyze_single', (req, res, next) => {
     var message = req.body.message;
-    analyze([{ text: message }]).then(data => {
-        // process the data
-        res.send(data);
+    analyze([{ text: message }]).then(result => getAutoResponse(result[0])).then(message => {
+        res.send(message); // send back the message
     }).catch(console.log);
 });
 
@@ -50,6 +48,7 @@ router.post('/delete_response', (req, res, next) => {
         // update the firestore document with new list
         db.collection('responses').doc(id).update({ messages: messages })
             .then(() => {
+                auto_res_lib_changed = true; // mark the change
                 res.send(true);
             }).catch(() => {
                 res.send(false);
@@ -70,6 +69,7 @@ router.post('/update_response', (req, res, next) => {
         // update the firestore document with new list
         db.collection('responses').doc(id).update({ messages: messages })
             .then(() => {
+                auto_res_lib_changed = true; // mark the change
                 res.send(true);
             }).catch(() => {
                 res.send(false);
@@ -88,6 +88,7 @@ router.post('/new_response', (req, res, next) => {
         // update the firestore document with new list
         db.collection('responses').doc(id).update({ messages: messages })
             .then(() => {
+                auto_res_lib_changed = true; // mark the change
                 res.send(true);
             }).catch(() => {
                 res.send(false);
@@ -102,20 +103,25 @@ router.post('/get_twitter_mesage', (req, res, next) => {
 /* helper function for getting all saved responses */
 function getSavedResponses() {
     return new Promise(async (resolve, reject) => {
-        var querySnapshot = await db.collection("responses").get();
-        var docs = await querySnapshot.docs.map(doc => [doc.id, doc.data()]);
-        if (!docs) reject("error");
-        var temp_docs = [];
-        for (var key in docs) {
-            temp_docs.push({
-                id: docs[key][0],
-                messages: docs[key][1].messages
-            });
+        if (auto_res_lib && !auto_res_lib_changed) {
+            resolve(auto_res_lib);
+        } else {
+            var querySnapshot = await db.collection("responses").get();
+            var docs = await querySnapshot.docs.map(doc => [doc.id, doc.data()]);
+            if (!docs) reject("error"); // could not get data
+            var temp_docs = [];
+            for (var key in docs) {
+                temp_docs.push({
+                    id: docs[key][0],
+                    messages: docs[key][1].messages
+                });
+            }
+            auto_res_lib = temp_docs;
+            auto_res_lib_changed = false; // auto responses updated to latest
+            resolve(temp_docs);
         }
-        resolve(temp_docs);
     });
 }
-
 /* function for analyzing list of up to 50 messages at a time */
 function analyze(messages) {
     var toneChatParams = {
@@ -133,29 +139,43 @@ function analyze(messages) {
     });
 }
 
+function getAutoResponse(results) {
+    return new Promise((resolve, reject) => {
+        getSavedResponses().then(responses => {
+            // get and sort the tones
+            var tones = results.tones;
+            tones = tones.sort((a, b) => {
+                if (a.score < b.score) {
+                    return -1;
+                } else if (a.score > b.score) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            var response_str = ""; // the string to buld up then return
+            // for each tone found, build the response string
+            for (var i in tones) {
+                var tone = tones[i].tone_id;
 
-
-function processing(results) {
-    var tones = results.tones;
-    tones.sort((a, b) => {
-        
-        if (a.score < b.score) {
-            return -1;
-        } else if (a.score > b.score) {
-            return 1;
-        } else {
-            return 0;
-        }
+                var tone_response = responses.filter(obj => {
+                    return obj.id === tone;
+                });
+                tone_response = tone_response[0].messages;
+                // tone_response is a list of possible messages. Pick one at random
+                var random_ind = getRandomInt(0, tone_response.length - 1);
+                response_str += tone_response[random_ind] + ". ";
+            }
+            resolve(response_str);
+        }).catch(reject);
     });
-
-    for (var key in tones) {
-        
-        
-    }
 }
 
+/* inclusive random */
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  
 
 /*
 Given the analysis results, respond with the appropriate combination of
