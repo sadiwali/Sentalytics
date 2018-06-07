@@ -5,9 +5,8 @@ var auto_res_lib_changed = false; // need to pull the list again?
 var auto_res_lib; // get auto-responses from here
 
 // on load, analyze and redirect to home again 
-var db = firebase.firestore();
-
-
+var auto_res_lib_changed = false; // need to pull the list again?
+var auto_res_lib; // get auto-responses from here
 router.get('/', (req, res, next) => {
     res.redirect('/dashboard');
 });
@@ -90,12 +89,18 @@ router.post('/new_response', (req, res, next) => {
         // update the firestore document with new list
         db.collection('responses').doc(id).update({ messages: messages })
             .then(() => {
-                auto_res_lib_changed = true;
+
+                auto_res_lib_changed = true; // mark the change
+
                 res.send(true);
             }).catch(() => {
                 res.send(false);
             });
     });
+});
+
+router.post('/get_twitter_mesage', (req, res, next) => {
+
 });
 
 /* helper function for getting all saved responses */
@@ -120,7 +125,6 @@ function getSavedResponses() {
         }
     });
 }
-
 /* function for analyzing list of up to 50 messages at a time */
 function analyze(messages) {
     var toneChatParams = { utterances: messages };
@@ -153,7 +157,7 @@ function getAutoResponse(results) {
             // for each tone found, build the response string
             for (var i in tones) {
                 var tone = tones[i].tone_id;
-   
+
                 var tone_response = responses.filter(obj => {
                     return obj.id === tone;
                 });
