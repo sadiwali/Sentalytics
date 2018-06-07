@@ -96,6 +96,45 @@ router.post('/new_response', (req, res, next) => {
     });
 });
 
+/* Request to start analysis on the 50 messages from twitter */
+router.post('/start_mass_analysis', (req, res, next) => {
+    // analyze the messages
+    // for demo purposes, get this list by calling the function
+    getMessages('twitter', 50).then(analyze).then(tones => {
+        for (var key in tones) {
+            // for each tone detected
+            // get the message
+            // getAutoResponse(tones[key]).then().catch()
+
+            // analyze data
+
+        }
+    });
+
+    // for each message, get the response
+
+    // for each message, respond back
+
+
+});
+
+
+
+function saveAnalysis(tones) {
+    // save the tone count for display
+    for (var key in tones) {
+        let tone = tones[key];
+        sentiments_count[tone.tone_id]++; // increment the count
+    }
+}
+
+/*  */
+function getMessages(source, count) {
+    return new Promise((resolve, reject) => {
+        resolve(twitter_data);
+    });
+}
+
 router.post('/get_twitter_mesage', (req, res, next) => {
 
 });
@@ -122,7 +161,8 @@ function getSavedResponses() {
         }
     });
 }
-/* function for analyzing list of up to 50 messages at a time */
+
+/* analyze a list of up to 50 messages at a time */
 function analyze(messages) {
     var toneChatParams = {
         utterances: messages
@@ -139,6 +179,7 @@ function analyze(messages) {
     });
 }
 
+/* Get an automatic response for a single message */
 function getAutoResponse(results) {
     return new Promise((resolve, reject) => {
         getSavedResponses().then(responses => {

@@ -12,6 +12,7 @@ $(document).ready(() => {
     resize_respond_button()
     // get saved responses for each tone block
 
+
     $.post("/analyze/get_colors", data => {
         // data received, update response_element
         colors = data;
@@ -31,7 +32,10 @@ $(document).ready(() => {
             }
             // all of the responses populated, so begin color setting
             setupColours();
-            setupChart();
+            $.post("/get_analysis_data", data => {
+
+                setupChart(data);
+            });
         });
     });
 });
@@ -173,7 +177,7 @@ function resize_respond_button() {
     });
 }
 
-function setupChart() {
+function setupChart(data) {
     var color_names = Object.keys(colors);
     var color_codes = [];
 
@@ -188,7 +192,7 @@ function setupChart() {
             labels: color_names,
             datasets: [{
                 label: 'Tonal Association with BMO',
-                data: [12, 19, 3, 5, 2, 3, 5],
+                data: data,
                 backgroundColor: color_codes,
                 borderWidth: 2
             }]

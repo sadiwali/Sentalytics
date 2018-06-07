@@ -21,7 +21,7 @@ require("firebase/firestore");
 // initialize firebase
 firebase.initializeApp(credentials.firebase);
 db = firebase.firestore();
-db.settings({timestampsInSnapshots: true});
+db.settings({ timestampsInSnapshots: true });
 var all_sentiments = [
   // from general tone
   'anger',
@@ -83,64 +83,79 @@ for (var sentiment in sentiments_used) sentiments_count[sentiment] = 0;
 
 twitter_data = [
   {
+    id: 0,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 1,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 2,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 3,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 4,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 5,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 6,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 7,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 8,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 9,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 10,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 11,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 12,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 13,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
   {
+    id: 14,
     user: "Bob",
-    "message": "I really this product."
+    message: "I really this product."
   },
 ];
 
