@@ -135,8 +135,10 @@ function createNewResponse(element) {
             var id = $(element).parent().parent().attr('id');
             $.post('/analyze/new_response', { id: id, message: message }, res => {
                 if (res) {
+
                     // added 
                     showToast("Added!", 3000);
+
                 } else {
                     // could not add
                     showToast("Uh oh. Something happend while trying to insert.", 3000);
