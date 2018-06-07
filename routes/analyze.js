@@ -95,6 +95,10 @@ router.post('/new_response', (req, res, next) => {
     });
 });
 
+router.post('/get_twitter_mesage', (req, res, next) => {
+
+});
+
 /* helper function for getting all saved responses */
 function getSavedResponses() {
     return new Promise(async (resolve, reject) => {
@@ -129,11 +133,12 @@ function analyze(messages) {
     });
 }
 
+
+
 function processing(results) {
     var tones = results.tones;
-
-
-    tones = tones.sort((a, b) => {
+    tones.sort((a, b) => {
+        
         if (a.score < b.score) {
             return -1;
         } else if (a.score > b.score) {
@@ -142,6 +147,11 @@ function processing(results) {
             return 0;
         }
     });
+
+    for (var key in tones) {
+        
+        
+    }
 }
 
 

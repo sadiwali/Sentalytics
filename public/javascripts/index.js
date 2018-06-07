@@ -131,19 +131,20 @@ function createNewResponse(element) {
             var id = $(element).parent().parent().attr('id');
             $.post('/analyze/new_response', { id: id, message: message }, res => {
                 if (res) {
-                    // added
-                    $(element).parent().children('ul').children('li')
-                        .last().before('<li><textarea disabled id="entered_response" '
-                            + 'placeholder="Write here...">' + message
-                            + '</textarea><ul><li onclick="enableEdit(this);">Edit</li>' +
-                            '<li onclick="deleteResponse(this)">Delete</li></ul></li>');
-                    textArea.val('');
+                    // added 
+                    showToast("Added!", 3000);
                 } else {
                     // could not add
                     showToast("Uh oh. Something happend while trying to insert.", 3000);
-
                 }
             });
+            $(element).parent().children('ul').children('li')
+                .last().before('<li><textarea disabled id="entered_response" '
+                    + 'placeholder="Write here...">' + message
+                    + '</textarea><ul><li onclick="enableEdit(this);">Edit</li>' +
+                    '<li onclick="deleteResponse(this)">Delete</li></ul></li>');
+            textArea.val('');
+            setupColours();
         }
         textArea.css({
             'display': 'none'
