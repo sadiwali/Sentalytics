@@ -129,6 +129,24 @@ function analyze(messages) {
     });
 }
 
+function processing(results) {
+    var tones = results.tones;
+
+
+    tones = tones.sort((a, b) => {
+        if (a.score < b.score) {
+            return -1;
+        } else if (a.score > b.score) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+}
+
+
+  
+
 /*
 Given the analysis results, respond with the appropriate combination of
 auto-responses.
