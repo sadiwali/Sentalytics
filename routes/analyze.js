@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
-var auto_res_lib_changed = false; // need to pull the list again?
-var auto_res_lib; // get auto-responses from here
 
 // on load, analyze and redirect to home again 
 var auto_res_lib_changed = false; // need to pull the list again?
@@ -27,7 +25,6 @@ router.post('/analyze_single', (req, res, next) => {
     analyze([{ text: message }]).then(result => getAutoResponse(result[0])).then(message => {
         res.send(message); // send back the message
     }).catch(console.log);
-
 });
 
 /* Get list of all saved auto-resposes for local JS to populate */
@@ -41,10 +38,12 @@ router.post('/get_responses', (req, res, next) => {
 router.post('/delete_response', (req, res, next) => {
     var id = req.body.id;
     var ind = req.body.ind;
+    console.log(id);
     // get the list of responses
     db.collection('responses').doc(id).get().then(doc => {
         // modify the list by removing that index
         var messages = doc.data().messages;
+        console.log(messages);
         messages.splice(ind, 1);
         // update the firestore document with new list
         db.collection('responses').doc(id).update({ messages: messages })
@@ -89,14 +88,16 @@ router.post('/new_response', (req, res, next) => {
         // update the firestore document with new list
         db.collection('responses').doc(id).update({ messages: messages })
             .then(() => {
-
                 auto_res_lib_changed = true; // mark the change
-
                 res.send(true);
             }).catch(() => {
                 res.send(false);
             });
     });
+});
+
+router.post('/get_analysis_data', (req, res, next) => {
+    res.send(sentiments_count);
 });
 
 /* Request to start analysis on the 50 messages from twitter */
@@ -122,7 +123,7 @@ router.post('/start_mass_analysis', (req, res, next) => {
 });
 
 
-
+/* update the sentiments count for chart */
 function saveAnalysis(tones) {
     // save the tone count for display
     for (var key in tones) {
@@ -167,13 +168,16 @@ function getSavedResponses() {
 
 /* analyze a list of up to 50 messages at a time */
 function analyze(messages) {
-    var toneChatParams = { utterances: messages };
+    var toneChatParams = {
+        utterances: messages
+    };
     return new Promise((resolve, reject) => {
         toneAnalyzer.toneChat(toneChatParams, function (error, analysis) {
             if (error) {
                 reject(error);
             } else {
                 resolve(analysis.utterances_tone);
+                console.log(analysis.utterances_tone);
             }
         }); 0;
     });

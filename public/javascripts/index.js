@@ -32,9 +32,14 @@ $(document).ready(() => {
             }
             // all of the responses populated, so begin color setting
             setupColours();
-            $.post("/get_analysis_data", data => {
+            $.post("/analyze/get_analysis_data", data => {
+                var processed_data = [];
+                for (key in data) {
+                    processed_data.push(data[key]);
+                }
+                console.log(processed_data);
 
-                setupChart(data);
+                setupChart(processed_data);
             });
         });
     });
@@ -135,10 +140,8 @@ function createNewResponse(element) {
             var id = $(element).parent().parent().attr('id');
             $.post('/analyze/new_response', { id: id, message: message }, res => {
                 if (res) {
-
                     // added 
                     showToast("Added!", 3000);
-
                 } else {
                     // could not add
                     showToast("Uh oh. Something happend while trying to insert.", 3000);
@@ -182,6 +185,17 @@ function resize_respond_button() {
 function setupChart(data) {
     var color_names = Object.keys(colors);
     var color_codes = [];
+
+    var data_sum = 0;
+    for (var key in data) data_sum += data[key];
+
+    if (data.length == 0 || data_sum == 0) {
+        // no data, or all values 0
+        $('.no_data').css('display', 'block');
+    } else {
+        // have data
+        $('.no_data').css('display', 'none');
+    }
 
     for (var key in color_names) {
         color_codes.push(colors[color_names[key]]);

@@ -77,8 +77,6 @@ sentiments_count = {}
 for (var sentiment in sentiments_used) sentiments_count[sentiment] = 0;
 
 
-
-
 // debug purposes, this list is used while twitter scrubber is being developed
 
 twitter_data = [
