@@ -138,10 +138,10 @@ function createNewResponse(element) {
                             + '</textarea><ul><li onclick="enableEdit(this);">Edit</li>' +
                             '<li onclick="deleteResponse(this)">Delete</li></ul></li>');
                     textArea.val('');
+                    setupColours();
                 } else {
                     // could not add
                     showToast("Uh oh. Something happend while trying to insert.", 3000);
-
                 }
             });
         }

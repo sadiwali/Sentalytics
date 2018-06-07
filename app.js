@@ -21,6 +21,7 @@ require("firebase/firestore");
 // initialize firebase
 firebase.initializeApp(credentials.firebase);
 db = firebase.firestore();
+db.settings({timestampsInSnapshots: true});
 
 var all_sentiments = [
   // from general tone
