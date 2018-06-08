@@ -1,22 +1,52 @@
-<!DOCTYPE html>
-<html>
-
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no">
-  <title>{{ title }}</title>
+  <title>{{title}}</title>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-  <link rel="stylesheet" href="/stylesheets/style.css">
-
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+  <script src="https://unpkg.com/packery@2/dist/packery.pkgd.min.js"></script>
+  <script src="/javascripts/index.js"></script>
 </head>
 
 <body>
 
-  {{{ body }}}
 
+  {{{body}}}
+  <div class="toast">
+    <p class="toast_message">this is the taost mesage</p>
+    <div class="bg"></div>
+  </div>
+</body>
+<footer>
+  <div class="wrapper_b">
+    <span class="company_space">
+      <h1>Sentalytics</h1>
+      <p>Copyright 2018 Sentalytics Inc.
+        <br> All rights reserved.</p>
+    </span>
 
-</html>
+    <span class="links">
+      <ul>
+        <li class="link_title">Company</li>
+        <li>About</li>
+        <li>Contact Us</li>
+        <li>Terms of Service</li>
+      </ul>
+      <ul>
+        <li class="link_title">Legal</li>
+        <li>Privacy Policy</li>
+
+      </ul>
+      <ul>
+        <li class="link_title">Social</li>
+        <li>Facebook</li>
+        <li>Twitter</li>
+        <li>Instagram</li>
+        <li>LinkedIn</li>
+
+      </ul>
+    </span>
+  </div>
+</footer>

@@ -1,0 +1,106 @@
+<header>
+    <div class="wrapper">
+        <h1 class="logo">Sentalytics</h1>
+        <span class="user_menu">
+            <h1>XYZ Group</h1>
+            <img src="/profile.jpg" />
+        </span>
+    </div>
+</header>
+
+<div class="top_page">
+    <div class="wrapper_a">
+        <h2>Your company:</h2>
+        <h1>XYZ Group</h1>
+        <p>What people are feeling about your company...</p>
+        <div class="button_white short">
+            Analyze
+        </div>
+
+    </div>
+</div>
+
+<div class="main_wrapper">
+    <section class="content" id="chart_section">
+        <div class="title">
+            <h1>Customer Sentiment Chart</h1>
+            <p>May 12, 2018 - present</p>
+        </div>
+        <div class="top_flex">
+            <div class="pie_chart">
+                <div class="chart_area">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+
+                <div class="no_data">
+                    No Data...
+                </div>
+
+            </div>
+            <div class="demo">
+                <h3>Test the auto-response</h3>
+                <textarea class="demo_text" placeholder="Enter a sample comment"></textarea>
+                <div class="auto_res">
+                    <h3>Auto-response:</h3>
+                    <p></p>
+                </div>
+                <div class="button_white short blue" onclick="analyzeDemoMessage(this);">Submit</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content" id="autores">
+        <div class="title">
+            <h1>Automated Responses</h1>
+            <p>Set your own responses to the tones below. <br>Our robots will randomly pick one of them from the appropriate tone to display.</p>
+        </div>
+
+        {{#each sentiment_blocks}}
+
+
+        <div class="tone" id="{{this.sentiment}}">
+            <span class="tone_header">
+                <div class="col" style="background-color:{{this.col}}"></div>
+                <span class="text">{{this.sentiment}}</span>
+            </span>
+            <div class="message">
+                <h1>How would you respond to...</h1>
+                {{#each this.sample_comments}}
+                <p>"{{this}}"</p>
+                {{/each}}
+            </div>
+            <div class="response">
+                <h1>Your response:</h1>
+                <ul>
+                    {{!--
+                    <li>
+                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
+                        <ul>
+                            <li onclick="enableEdit(this);">Edit</li>
+                            <li onclick="deleteResponse(this);">Delete</li>
+                        </ul>
+                    </li> --}}
+                    <li>
+                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
+                    </li>
+                </ul>
+                <div class="new_response_btn" onclick="createNewResponse(this)">
+                    <i class="fas fa-plus"></i> &nbsp; Add a new response
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+    </section>
+
+</div>
+
+
+<div class="bot_page">
+    <div class="wrapper_a">
+        <h1>Keeping up with the feed</h1>
+        <div class="button_white">
+            View Sentimental History
+        </div>
+    </div>
+</div>
