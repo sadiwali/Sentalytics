@@ -198,6 +198,10 @@ function getAutoResponse(results) {
                     return 0;
                 }
             });
+            // filter tones not used
+            tones = tones.filter(item => {
+                return sentiments_used.indexOf(item.tone_id) != -1;
+            });
             var response_str = ""; // the string to buld up then return
             // for each tone found, build the response string
             for (var i in tones) {
