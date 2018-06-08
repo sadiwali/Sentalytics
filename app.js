@@ -6,22 +6,30 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var credentials = require('./credentials.json'); // api credentials
+var Twitter = require('twitter');
+var firebase = require("firebase");
+// Required for side-effects
+require("firebase/firestore");
+firebase.initializeApp(credentials.firebase);
 
+
+// global apis
+// the twitter api
+twitterClient = new Twitter(credentials.twitter); 
+// the ibm watson tone analyzer api
 toneAnalyzer = new ToneAnalyzerV3({
   version: '2017-09-21',
   username: credentials.watson.username,
   password: credentials.watson.password,
   headers: { 'X-Watson-Learning-Opt-Out': 'true' }
 });
-
-firebase = require("firebase");
-// Required for side-effects
-require("firebase/firestore");
-
-// initialize firebase
-firebase.initializeApp(credentials.firebase);
+// the firebase database
 db = firebase.firestore();
 db.settings({ timestampsInSnapshots: true });
+
+// global apis ends
+
+
 var all_sentiments = [
   // from general tone
   'anger',
