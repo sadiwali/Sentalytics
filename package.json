@@ -15,6 +15,7 @@
     "morgan": "~1.9.0",
     "particles.js": "^2.0.0",
     "request": "^2.87.0",
+    "twitter": "^1.7.1",
     "watson-developer-cloud": "^3.4.5"
   },
   "devDependencies": {
