@@ -28,16 +28,16 @@ router.get('/dashboard', function (req, res, next) {
 
 var client = new Twitter({
   consumer_key: '6YyI5jBMQE47qtmAVXe4rh9yP',
-  consumer_secret: 'XS9jRXPpCYQ3kjOQKaK8t3bg9K0WDEdUk1dRDuwL92XHar5UtNtXX',
+  consumer_secret: 'S9jRXPpCYQ3kjOQKaK8t3bg9K0WDEdUk1dRDuwL92XHar5UtNt',
   access_token_key: '110404132-ptRGGeRn9B5NIz8w0zx8mSSb6lneINNTfFccpiHy',
   access_token_secret: 'FVpZkznyG5KtlS8qFCrmAdWvD5Vzm2IicEuv3PYo2OlSK'
 });
 
 router.get('/test_message_board', (req, res) => {
   // https://dev.twitter.com/rest/reference/get/statuses/user_timeline
-  client.get('statuses/user_timeline', { screen_name: 'nodejs', count: 20 }, function(error, tweets, response) {
+  client.get('statuses/user_timeline', { screen_name: 'bmo', count: 20 }, function(error, tweets, response) {
     if (!error) {
-      res.status(200).render('index', { title: 'Express', tweets: tweets });
+      res.status(200).render('messages', { title: 'Express', tweets: tweets });
     }
     else {
       res.status(500).json({ error: error });
