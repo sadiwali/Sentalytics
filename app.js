@@ -211,3 +211,11 @@ app.use(function (err, req, res, next) {
 
 
 module.exports = app;
+
+
+// azad's stuff
+
+
+app.listen(process.env.PORT, process.env.IP, () => {
+    console.log("Sentalytics has started!");
+});
