@@ -19,8 +19,8 @@ twitterClient = new Twitter(credentials.twitter);
 // the ibm watson tone analyzer api
 toneAnalyzer = new ToneAnalyzerV3({
   version: '2017-09-21',
-  username: credentials.watson.username,
-  password: credentials.watson.password,
+  username: credentials.watson_tone_analyzer.username,
+  password: credentials.watson_tone_analyzer.password,
   headers: { 'X-Watson-Learning-Opt-Out': 'true' }
 });
 // the firebase database
