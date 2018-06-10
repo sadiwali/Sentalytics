@@ -1,29 +1,38 @@
 import nltk
 from nltk.stem import WordNetLemmatizer
-from sklearn.feature_extraction.text import CountVectorizer
+import pandas as pd
+import numpy as np
 import re
 import string
 
+stopwords = nltk.corpus.stopwords.words('english') + ['rt', 'via']
 lmtzr = WordNetLemmatizer()
-stopwords = nltk.corpus.stopwords.words('english')
 ps = nltk.PorterStemmer()
 
+word_string = ""
 
-def clean_text(text: 'str') -> ['str']:
+def process_text(text: 'str') -> ['str']:
     ''' Remove punctuation, remove stop-words, removes verbs, then lemmatize.
     '''
-    # tokenize
+    # remove punctuation
     text = "".join([word.lower()
-                    for word in text if word not in string.punctuation])
-    tokens = re.split(r'\W+', text)
+                    for word in text if word not in string.punctuation + '’'])
+    # tokenize
+    tokens = nltk.word_tokenize(text)
+    # remove stopwords
+    no_stop_words = [token for token in tokens if token not in stopwords]
+    # lemmatize
+    lemmatized = [lmtzr.lemmatize(token) for token in no_stop_words]
+    return lemmatized
+   
 
-    text = " ".join([lmtzr.lemmatize(word) for word in [token for token in tokens if not ('VB' == nltk.pos_tag(token)[0][1][0:2]) if word not in stopwords]])
-    return text
-
-
-text = "I tried the mobile deposit on the app, and it says the money was added to my account and then removed right afterward. I normally go to a branch to deposit my cheques so I don’t know if this is normal, but it’s frustrating not knowing what’s going on."
+text = "I tried! the mobile deposit on the app, and it says the money was added to my account and then removed right afterward. I normally go to a branch to deposit my cheques so I don’t know if this is normal, but it’s frustrating not knowing what’s going on."
 
 
 
-print(nltk.pos_tag(nltk.word_tokenize(clean_text(text))))
+def keep_count(words: '[str]') -> None:
+    word_string += " ".join([word for word in words])
+    if (len(word_string))
+
+print(process_text(text))
 
