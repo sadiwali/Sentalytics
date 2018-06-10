@@ -27,9 +27,10 @@ router.get('/dashboard', function (req, res, next) {
 
 router.get('/test_message_board', (req, res) => {
   // https://dev.twitter.com/rest/reference/get/statuses/user_timeline
-  twitterClient.get('statuses/user_timeline', { screen_name: 'bmo', count: 20 }, function(error, tweets, response) {
+  twitterClient.get('search/tweets.json?q=@bmo&src=typd', { count: 60 }, function(error, tweets, response) {
     if (!error) {
-      res.status(200).render('messages', { title: 'Express', tweets: tweets });
+      res.status(200).render('messages', { title: 'The Tweets', tweets: tweets.statuses });
+      console.log(tweets.statuses);
     }
     else {
       res.status(500).json({ error: error });
