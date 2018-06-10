@@ -52,12 +52,38 @@
     <section class="content" id="autores">
         <div class="title">
             <h1>Automated Responses</h1>
-            <p>Set your own responses to the tones below. <br>Our robots will randomly pick one of them from the appropriate tone to display.</p>
+            <p>Set your own responses to the tones below.
+                <br>Our robots will randomly pick one of them from the appropriate tone to display.</p>
+        </div>
+        <div class="tone" id="greeting">
+            <span class="tone_header">
+                <span class="text">First, lets add some greetings</span>
+            </span>
+            <div class="message">
+                <p>Use [name] to refer to person's name.</p>
+            </div>
+            <div class="response">
+                <h1>Your response:</h1>
+                <ul>
+                    {{!--
+                    <li>
+                        <textarea disabled id="entered_response" placeholder="Write here..."></textarea>
+                        <ul>
+                            <li onclick="enableEdit(this);">Edit</li>
+                            <li onclick="deleteResponse(this);">Delete</li>
+                        </ul>
+                    </li> --}}
+                    <li>
+                        <textarea style="display: none" class="new_response" placeholder="Write here..."></textarea>
+                    </li>
+                </ul>
+                <div class="new_response_btn" onclick="createNewResponse(this)">
+                    <i class="fas fa-plus"></i> &nbsp; Add a new greeting
+                </div>
+            </div>
         </div>
 
         {{#each sentiment_blocks}}
-
-
         <div class="tone" id="{{this.sentiment}}">
             <span class="tone_header">
                 <div class="col" style="background-color:{{this.col}}"></div>

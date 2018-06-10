@@ -19,8 +19,8 @@ twitterClient = new Twitter(credentials.twitter);
 // the ibm watson tone analyzer api
 toneAnalyzer = new ToneAnalyzerV3({
   version: '2017-09-21',
-  username: credentials.watson.username,
-  password: credentials.watson.password,
+  username: credentials.watson_tone_analyzer.username,
+  password: credentials.watson_tone_analyzer.password,
   headers: { 'X-Watson-Learning-Opt-Out': 'true' }
 });
 // the firebase database
@@ -90,8 +90,8 @@ for (var sentiment in sentiments_used) sentiments_count[sentiment] = 0;
 twitter_data = [
   {
     id: 0,
-    user: "Bob",
-    message: "I really this product."
+    user: "Andrea",
+    message: "Trying to pay CRA source deductions. Link on CRA page to pay from BMO account through interact online hasn't worked for days. Any idea of issue is BMO or CRA?"
   },
   {
     id: 1,

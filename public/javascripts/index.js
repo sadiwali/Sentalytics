@@ -48,6 +48,7 @@ $(document).ready(() => {
 function setupColours() {
     $('.tone').each((index, elem) => {
         var col = $(elem).children('.tone_header').children('.col').css('backgroundColor');
+        if (!col) col = '#4285F4'; // default color       
 
         $(elem).children('.response').children('ul').children('li').each((index_a, elem_a) => {
             $(elem_a).children('ul').children('li').first().css({
@@ -122,7 +123,7 @@ function deleteResponse(element) {
             }
         });
     } else {
-        showToast("You can't delete that. There must be at least one.", 3000);
+        showToast("You can't delete that. There must be at least one response set.", 3000);
 
     }
 }

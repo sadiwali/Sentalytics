@@ -22,7 +22,7 @@ router.post('/get_colors', (req, res, next) => {
 /* Analyze a single message (used for demo) */
 router.post('/analyze_single', (req, res, next) => {
     var message = req.body.message;
-    analyze([{ text: message }]).then(result => getAutoResponse(result[0])).then(message => {
+    analyze([{ text: message }]).then(result => generateResponse(result[0])).then(message => {
         res.send(message); // send back the message
     }).catch(console.log);
 });
@@ -184,7 +184,7 @@ function analyze(messages) {
 }
 
 /* Get an automatic response for a single message */
-function getAutoResponse(results) {
+function generateResponse(results, name = null) {
     return new Promise((resolve, reject) => {
         getSavedResponses().then(responses => {
             // get and sort the tones
@@ -198,18 +198,50 @@ function getAutoResponse(results) {
                     return 0;
                 }
             });
+            // filter tones not used
+            tones = tones.filter(item => {
+                return sentiments_used.indexOf(item.tone_id) != -1;
+            });
             var response_str = ""; // the string to buld up then return
+            var random_ind;
+            var tone_response;
+            // if a name is given, build the greeting
+            if (name) {
+                tone_response = responses.filter(obj => {
+                    return obj.id === 'greeting';
+                });
+                tone_response = tone_response[0].messages;
+                random_ind = getRandomInt(0, tone_response.length - 1);
+                response_str += tone_response[random_ind].replace('[name]', name);
+                var last_char = response_str.slice(-1);
+                if (last_char === '.' || last_char === '!' || last_char === '?') {
+                    // punctuation exists, add only space
+                    response_str += ' ';
+                } else {
+                    // add a period then space
+                    response_str += '. ';
+                }
+            }
+
             // for each tone found, build the response string
             for (var i in tones) {
                 var tone = tones[i].tone_id;
 
-                var tone_response = responses.filter(obj => {
+                tone_response = responses.filter(obj => {
                     return obj.id === tone;
                 });
                 tone_response = tone_response[0].messages;
                 // tone_response is a list of possible messages. Pick one at random
-                var random_ind = getRandomInt(0, tone_response.length - 1);
-                response_str += tone_response[random_ind] + ". ";
+                random_ind = getRandomInt(0, tone_response.length - 1);
+                response_str += tone_response[random_ind];
+                var last_char = response_str.slice(-1);
+                if (last_char === '.' || last_char === '!' || last_char === '?') {
+                    // punctuation exists, add only space
+                    response_str += ' ';
+                } else {
+                    // add a period then space
+                    response_str += '. ';
+                }
             }
             resolve(response_str);
         }).catch(reject);
