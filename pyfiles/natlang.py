@@ -1,6 +1,8 @@
 import nltk
 from nltk.stem import WordNetLemmatizer
+from nltk.sentiment.sentiment_analyzer import SentimentAnalyzer
 import pandas as pd
+import array
 import numpy as np
 import re
 import string
@@ -8,8 +10,8 @@ import string
 stopwords = nltk.corpus.stopwords.words('english') + ['rt', 'via']
 lmtzr = WordNetLemmatizer()
 ps = nltk.PorterStemmer()
+sa = SentimentAnalyzer()
 
-word_string = ""
 
 def process_text(text: 'str') -> ['str']:
     ''' Remove punctuation, remove stop-words, removes verbs, then lemmatize.
@@ -28,11 +30,5 @@ def process_text(text: 'str') -> ['str']:
 
 text = "I tried! the mobile deposit on the app, and it says the money was added to my account and then removed right afterward. I normally go to a branch to deposit my cheques so I don’t know if this is normal, but it’s frustrating not knowing what’s going on."
 
-
-
-def keep_count(words: '[str]') -> None:
-    word_string += " ".join([word for word in words])
-    if (len(word_string))
-
-print(process_text(text))
+print(sa.classify(process_text(text)))
 
